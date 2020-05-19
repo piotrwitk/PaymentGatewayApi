@@ -13,10 +13,15 @@ namespace PaymentGateway
             this.paymentProcessor = paymentProcessor;
         }
 
-        public Task<GatewayPaymentResponse> HandleIncomingPaymentRequest(GatewayPaymentRequest request)
+        public Task<GatewayPaymentResponse> HandlePaymentRequest(GatewayPaymentRequest request)
         {
             var response = paymentProcessor.HandlePaymentRequest(request);
-            return Task.FromResult(new GatewayPaymentResponse { });
+            return Task.FromResult(new GatewayPaymentResponse { IsSuccess = true });
+        }
+
+        public Task<GatewayDetailsResponse> HandleDetailsRequest(GatewayDetailsRequest request)
+        {
+            return Task.FromResult(new GatewayDetailsResponse { IsSuccess = true });
         }
     }
 }
