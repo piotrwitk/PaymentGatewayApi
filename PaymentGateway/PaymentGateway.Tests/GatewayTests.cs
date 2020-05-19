@@ -3,7 +3,6 @@ using NFluent;
 using NUnit.Framework;
 using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
-using PaymentGateway.PaymentProcessors.Models;
 using System.Threading.Tasks;
 
 namespace PaymentGateway.Tests
@@ -22,14 +21,19 @@ namespace PaymentGateway.Tests
 
         [Test]
         public void WhenHandlingRequestGatewayShouldCallPaymentProcessor()
-        {            
-            paymentProcessor.Setup(p => p.HandlePaymentRequest(It.IsAny<PaymentProcessorRequest>()))
-                .Returns(Task.FromResult(new PaymentProcessorResponse { IsSuccess = true }));
+        {
+            var request = new GatewayPaymentRequest
+            {
+                GatewayId = "gatewayid"               
+            };
 
-            var gatewayResponse = gateway.HandleIncomingPaymentRequest(new GatewayPaymentRequest { });
+            paymentProcessor.Setup(p => p.HandlePaymentRequest(request))
+                .Returns(Task.FromResult(new GatewayPaymentResponse { IsSuccess = true }));
+
+            var gatewayResponse = gateway.HandleIncomingPaymentRequest(request);
 
             Check.That(gatewayResponse).IsNotNull();
-            paymentProcessor.Verify(p => p.HandlePaymentRequest(It.IsAny<PaymentProcessorRequest>()), Times.Once);
+            paymentProcessor.Verify(p => p.HandlePaymentRequest(request), Times.Once);
 
         }
     }
