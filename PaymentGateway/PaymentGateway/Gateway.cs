@@ -1,6 +1,5 @@
 ﻿using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
-using PaymentGateway.PaymentProcessors.Models;
 using System.Threading.Tasks;
 
 namespace PaymentGateway
@@ -16,9 +15,8 @@ namespace PaymentGateway
 
         public Task<GatewayPaymentResponse> HandleIncomingPaymentRequest(GatewayPaymentRequest request)
         {
-            var response = paymentProcessor.HandlePaymentRequest(new PaymentProcessorRequest { });
+            var response = paymentProcessor.HandlePaymentRequest(request);
             return Task.FromResult(new GatewayPaymentResponse { });
-
         }
     }
 }

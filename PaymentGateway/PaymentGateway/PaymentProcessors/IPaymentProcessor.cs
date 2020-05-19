@@ -1,10 +1,10 @@
-﻿using PaymentGateway.PaymentProcessors.Models;
+﻿using PaymentGateway.Models;
 using System.Threading.Tasks;
 
 namespace PaymentGateway.PaymentProcessors
 {
     public interface IPaymentProcessor
     {
-        Task<PaymentProcessorResponse> HandlePaymentRequest(PaymentProcessorRequest request);
+        Task<GatewayPaymentResponse> HandlePaymentRequest(GatewayPaymentRequest request);
     }
 }
