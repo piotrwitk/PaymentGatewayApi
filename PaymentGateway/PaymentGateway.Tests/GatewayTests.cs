@@ -20,7 +20,7 @@ namespace PaymentGateway.Tests
         }
 
         [Test]
-        public void WhenHandlingRequestGatewayShouldCallPaymentProcessor()
+        public void WhenHandlingPaymentRequestGatewayShouldCallPaymentProcessor()
         {
             var request = new GatewayPaymentRequest
             {
@@ -30,7 +30,7 @@ namespace PaymentGateway.Tests
             paymentProcessor.Setup(p => p.HandlePaymentRequest(request))
                 .Returns(Task.FromResult(new GatewayPaymentResponse { IsSuccess = true }));
 
-            var gatewayResponse = gateway.HandleIncomingPaymentRequest(request);
+            var gatewayResponse = gateway.HandlePaymentRequest(request);
 
             Check.That(gatewayResponse).IsNotNull();
             paymentProcessor.Verify(p => p.HandlePaymentRequest(request), Times.Once);
