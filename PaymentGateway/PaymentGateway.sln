@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.WebApi", "PaymentGateway.WebApi\PaymentGateway.WebApi.csproj", "{2F9DF40E-1DEF-4868-8716-813511A52BD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway", "PaymentGateway\PaymentGateway.csproj", "{51E4A1AA-63A9-41D9-AB98-D6E09EF64F9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway", "PaymentGateway\PaymentGateway.csproj", "{51E4A1AA-63A9-41D9-AB98-D6E09EF64F9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Tests", "PaymentGateway.Tests\PaymentGateway.Tests.csproj", "{78BF6E2B-984E-4788-BB45-08E7B4CD888D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Tests", "PaymentGateway.Tests\PaymentGateway.Tests.csproj", "{78BF6E2B-984E-4788-BB45-08E7B4CD888D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.WebApi.Tests", "PaymentGateway.WebApi.Tests\PaymentGateway.WebApi.Tests.csproj", "{08F04A62-7710-44DF-870E-136A19DA4452}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{78BF6E2B-984E-4788-BB45-08E7B4CD888D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78BF6E2B-984E-4788-BB45-08E7B4CD888D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78BF6E2B-984E-4788-BB45-08E7B4CD888D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08F04A62-7710-44DF-870E-136A19DA4452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08F04A62-7710-44DF-870E-136A19DA4452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08F04A62-7710-44DF-870E-136A19DA4452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08F04A62-7710-44DF-870E-136A19DA4452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

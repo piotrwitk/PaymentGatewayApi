@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PaymentGateway
 {
-    public class Gateway
+    public class Gateway : IGateway
     {
         private readonly IPaymentProcessor paymentProcessor;
 
