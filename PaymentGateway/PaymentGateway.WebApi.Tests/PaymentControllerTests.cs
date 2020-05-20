@@ -5,12 +5,16 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PaymentGateway.WebApi.Utils;
+using Moq;
+using Newtonsoft.Json;
+using PaymentGateway.WebApi.Models.v1;
+using System;
+using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.WebApi.Filters;
-using PaymentGateway.WebApi.Utils;
 
 namespace PaymentGateway.WebApi.Tests
 {
@@ -18,35 +22,34 @@ namespace PaymentGateway.WebApi.Tests
     {
         private HttpClient client;
         private TestServer server;
+        private Mock<IGateway> mockedGateway;
+        private Mock<IGatewayClock> mockedClock;
 
         [SetUp]
         public void SetUp()
         {
+            mockedGateway = new Mock<IGateway>();
+            mockedClock = new Mock<IGatewayClock>();
 
             var hostBuilder = new WebHostBuilder()
                 .UseEnvironment("Development")
                 .UseTestServer()
-                .UseStartup<Startup>()
+                .UseStartup<TestStartup>()
                 .ConfigureServices(s => 
                 {
-                    s.AddSingleton<IGatewayClock, GatewayClock>();
-                    s.AddSingleton<ISystemClock, SystemClock>();
+                    s.AddControllers();
+                    s.AddHealthChecks().AddCheck<ApiHealthCheck>("api_health_check");
+                    s.AddSingleton<IGateway>(mockedGateway.Object);
+                    s.AddSingleton<IGatewayClock>(mockedClock.Object);
                     s.AddSingleton<IPaymentProcessor, SimulatedPaymentProcessor>();
-                })
-                ;
-
+                    s.AddMvc(options =>
+                    {
+                        options.Filters.Add(new ApiExceptionFilter());
+                    });                    
+                });
 
             server = new TestServer(hostBuilder);
-            var test = server.Services.GetRequiredService<IGatewayClock>();
-
             client = server.CreateClient();
-        }
-
-        [Test]
-        public async Task Test()
-        {
-            var result = await client.GetAsync("api/v1/payment/ /123");
-            Check.That(result.StatusCode).Equals(HttpStatusCode.BadRequest);
         }
 
         [TearDown]
@@ -54,6 +57,44 @@ namespace PaymentGateway.WebApi.Tests
         {
             client.Dispose();
             server.Dispose();
+        }
+
+        [Test]
+        public async Task Returns_BadRequest_WhenDetailsRequestMissing()
+        {
+            var result = await client.GetAsync("api/v1/payment/ /123");
+            Check.That(result.StatusCode).Equals(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public async Task ReturnsResponse_IfGatewayReturnsData()
+        {
+            var merchantId = "merchantId";
+            var merchantRef = "merchantRef";
+            var timestamp = DateTimeOffset.UtcNow;
+
+            mockedClock.Setup(c => c.GetCurrentUtcTimestamp())
+                .Returns(timestamp);
+            mockedGateway.Setup(g => g.HandleDetailsRequest(It.IsAny<GatewayDetailsRequest>()))
+                .ReturnsAsync(new GatewayResponse
+                {
+                    MerchantId = merchantId,
+                    MerchantReferenceNumber = merchantRef,
+                    IsSuccess = true,
+                    TimeStamp = timestamp
+                }); ;
+
+            var response = await client.GetAsync($"api/v1/payment/{merchantId}/{merchantRef}");
+            Check.That(response.StatusCode).Equals(HttpStatusCode.OK);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<PaymentResponse>(content);
+
+            Check.That(result).IsNotNull();
+            Check.That(result.MerchantId).Equals(merchantId);
+            Check.That(result.MerchantReferenceNumber).Equals(merchantRef);
+            Check.That(result.IsSuccess).IsTrue();
+            Check.That(result.TimeStamp).Equals(timestamp);
         }
     }
 }

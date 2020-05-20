@@ -1,17 +1,14 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PaymentGateway.PaymentProcessors;
-using PaymentGateway.WebApi.Filters;
-using PaymentGateway.WebApi.Utils;
 
-namespace PaymentGateway.WebApi
+namespace PaymentGateway.WebApi.Tests
 {
-    public class Startup
+    public class TestStartup
     {
-        public Startup(IConfiguration configuration)
+        public TestStartup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -21,15 +18,6 @@ namespace PaymentGateway.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddHealthChecks().AddCheck<ApiHealthCheck>("api_health_check");
-            services.AddSingleton<IPaymentProcessor, SimulatedPaymentProcessor>();
-            services.AddSingleton<IGateway, Gateway>();
-            services.AddSingleton<IGatewayClock, GatewayClock>();
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new ApiExceptionFilter());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

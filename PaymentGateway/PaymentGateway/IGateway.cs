@@ -5,7 +5,7 @@ namespace PaymentGateway
 {
     public interface IGateway
     {
-        Task<GatewayPaymentResponse> HandlePaymentRequest(GatewayPaymentRequest request);
-        Task<GatewayDetailsResponse> HandleDetailsRequest(GatewayDetailsRequest request);
+        Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request);
+        Task<GatewayResponse> HandleDetailsRequest(GatewayDetailsRequest request);
     }
 }

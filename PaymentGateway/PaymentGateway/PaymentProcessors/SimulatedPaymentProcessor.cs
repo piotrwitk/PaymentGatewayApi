@@ -6,7 +6,7 @@ namespace PaymentGateway.PaymentProcessors
 {
     public class SimulatedPaymentProcessor : IPaymentProcessor
     {
-        public Task<GatewayPaymentResponse> HandlePaymentRequest(GatewayPaymentRequest request)
+        public Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request)
         {
             throw new NotImplementedException();
         }

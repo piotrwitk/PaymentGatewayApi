@@ -5,6 +5,6 @@ namespace PaymentGateway.PaymentProcessors
 {
     public interface IPaymentProcessor
     {
-        Task<GatewayPaymentResponse> HandlePaymentRequest(GatewayPaymentRequest request);
+        Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request);
     }
 }
