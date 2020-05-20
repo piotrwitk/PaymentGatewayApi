@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PaymentGateway.DAL;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.WebApi.Filters;
 using PaymentGateway.WebApi.Utils;
@@ -26,6 +27,7 @@ namespace PaymentGateway.WebApi
             services.AddSingleton<IPaymentProcessor, SimulatedPaymentProcessor>();
             services.AddSingleton<IGateway, Gateway>();
             services.AddSingleton<IGatewayClock, GatewayClock>();
+            services.AddSingleton<IRepository, DummyRepository>();
             services.AddMvc(options =>
             {
                 options.Filters.Add(new ApiExceptionFilter());

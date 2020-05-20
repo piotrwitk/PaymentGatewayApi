@@ -15,6 +15,7 @@ using System.Text;
 using NFluent;
 using System.Net;
 using PaymentGateway.PaymentProcessors.Models;
+using PaymentGateway.DAL;
 
 namespace PaymentGateway.WebApi.Tests
 {
@@ -24,10 +25,13 @@ namespace PaymentGateway.WebApi.Tests
         private TestServer server;
         private Mock<IGatewayClock> mockedClock = new Mock<IGatewayClock>();
         private Mock<IPaymentProcessor> mockedPaymentProcessor = new Mock<IPaymentProcessor>();
+        private IRepository repository;
 
         [SetUp]
         public void SetUp()
-        {            
+        {
+            repository = new InMemoryRepository();
+
             var hostBuilder = new WebHostBuilder()
                 .UseEnvironment("Development")
                 .UseTestServer()
@@ -39,6 +43,7 @@ namespace PaymentGateway.WebApi.Tests
                     s.AddSingleton<IGateway, Gateway>();
                     s.AddSingleton<IGatewayClock>(mockedClock.Object);
                     s.AddSingleton<IPaymentProcessor>(mockedPaymentProcessor.Object);
+                    s.AddSingleton<IRepository>(repository);
                     s.AddMvc(options =>
                     {
                         options.Filters.Add(new ApiExceptionFilter());

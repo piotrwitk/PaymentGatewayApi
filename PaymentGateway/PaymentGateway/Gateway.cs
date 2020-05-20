@@ -1,4 +1,5 @@
-﻿using PaymentGateway.Models;
+﻿using PaymentGateway.DAL;
+using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.PaymentProcessors.Models;
 using System.Threading.Tasks;
@@ -8,22 +9,30 @@ namespace PaymentGateway
     public class Gateway : IGateway
     {
         private readonly IPaymentProcessor paymentProcessor;
+        private readonly IRepository repository;
 
-        public Gateway(IPaymentProcessor paymentProcessor)
+        public Gateway(IPaymentProcessor paymentProcessor, IRepository repository)
         {
             this.paymentProcessor = paymentProcessor;
+            this.repository = repository;
         }
 
         public async Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request)
         {
-            var paymentRequest = PaymentProcessorMapper.MapRequest(request);
-            var response = await paymentProcessor.HandlePaymentRequest(paymentRequest);
-            return PaymentProcessorMapper.MapResponse(response, request);
+            var requestWithId = await repository.RegisterPaymentRequest(request);
+
+            var paymentRequest = PaymentProcessorMapper.MapRequest(requestWithId);
+            var result = await paymentProcessor.HandlePaymentRequest(paymentRequest);
+            var response = PaymentProcessorMapper.MapResponse(result, request);
+
+            await repository.RegisterResponse(response);
+            return response;
         }
 
-        public Task<GatewayResponse> HandleDetailsRequest(GatewayDetailsRequest request)
+        public async Task<GatewayResponse> HandleDetailsRequest(GatewayDetailsRequest request)
         {
-            return Task.FromResult(new GatewayResponse { IsSuccess = true });
+            var response = await repository.RetrieveDetails(request.MerchantId, request.MerchantReferenceNumber);
+            return response;
         }
     }
 }
