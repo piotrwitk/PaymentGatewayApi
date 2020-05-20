@@ -17,7 +17,6 @@ namespace PaymentGateway.Tests
             Check.That(result).IsNotNull();
             Check.That(result.LongCardNumber).Equals(gatewayRequest.LongNumber);
             Check.That(result.CCV).Equals(gatewayRequest.CVV);
-            Check.That(result.GatewayId).Equals(gatewayRequest.GatewayId);
             Check.That(result.NameOnCard).Equals(gatewayRequest.NameOnCard);
             Check.That(result.PaymentAmount).Equals(gatewayRequest.PaymentAmount);
             Check.That(result.PaymentCurrency).Equals(gatewayRequest.PaymentCurrency);            

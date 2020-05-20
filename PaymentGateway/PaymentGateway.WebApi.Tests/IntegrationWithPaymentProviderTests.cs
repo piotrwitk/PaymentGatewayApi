@@ -76,7 +76,8 @@ namespace PaymentGateway.WebApi.Tests
 
             var paymentRequest = new PaymentRequest
             {
-                MerchantReferenceNumber = merchantRef
+                MerchantReferenceNumber = merchantRef,
+                LongCardNumber = "1111 1111 1111 1111"
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(paymentRequest), Encoding.UTF8, "application/json");

@@ -15,7 +15,7 @@ namespace PaymentGateway.PaymentProcessors.Models
                 IsSuccess = response.IsSuccess,
                 FailureReason = response.FailureReason,
                 PaymentProcessorId = response.PaymentProcessorReference,
-                TruncatedCardNumber = "***",
+                TruncatedCardNumber = request.TruncatedNumber,                
                 PaymentAmount = request.PaymentAmount,
                 PaymentCurrency = request.PaymentCurrency
             };
@@ -27,7 +27,6 @@ namespace PaymentGateway.PaymentProcessors.Models
             return new PaymentProcessorRequest
             {
                 CCV = request.CVV,
-                GatewayId = request.GatewayId,
                 LongCardNumber = request.LongNumber,
                 NameOnCard = request.NameOnCard,
                 ValidFrom = request.ValidFrom,

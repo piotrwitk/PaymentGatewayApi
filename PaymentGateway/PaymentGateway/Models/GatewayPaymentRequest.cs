@@ -22,6 +22,8 @@
 
         public string LongNumber { get; set; }
 
+        public string TruncatedNumber { get; set; }
+
         public string ValidFrom { get; set; }
 
         public string ValidTo { get; set; }

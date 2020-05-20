@@ -23,9 +23,6 @@ namespace PaymentGateway.WebApi.Filters
                 response.StatusCode = (int)HttpStatusCode.NotFound;
             }
 
-
-
-
             base.OnException(context);
         }
     }

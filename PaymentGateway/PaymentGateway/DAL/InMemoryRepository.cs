@@ -11,11 +11,11 @@ namespace PaymentGateway.DAL
         private List<GatewayPaymentRequest> requests = new List<GatewayPaymentRequest>();
         private List<GatewayResponse> responses = new List<GatewayResponse>();
 
-        public Task<GatewayPaymentRequest> RegisterPaymentRequest(GatewayPaymentRequest request)
+        public Task<string> RegisterPaymentRequest(GatewayPaymentRequest request)
         {
             request.GatewayId = Guid.NewGuid().ToString();
             requests.Add(request);
-            return Task.FromResult(request);
+            return Task.FromResult(request.GatewayId);
         }
 
         public Task RegisterResponse(GatewayResponse response)

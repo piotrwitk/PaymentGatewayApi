@@ -20,11 +20,12 @@ namespace PaymentGateway
 
         public async Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request)
         {
-            var requestWithId = await repository.RegisterPaymentRequest(request);
+            var encyptedRequest = CardEncryptor.EncryptCardData(request);            
+            var gatewayId = await repository.RegisterPaymentRequest(encyptedRequest);
 
-            var paymentRequest = PaymentProcessorMapper.MapRequest(requestWithId);
+            var paymentRequest = PaymentProcessorMapper.MapRequest(request);
             var result = await paymentProcessor.HandlePaymentRequest(paymentRequest);
-            var response = PaymentProcessorMapper.MapResponse(result, request);
+            var response = PaymentProcessorMapper.MapResponse(result, encyptedRequest);
 
             await repository.RegisterResponse(response);
             return response;
