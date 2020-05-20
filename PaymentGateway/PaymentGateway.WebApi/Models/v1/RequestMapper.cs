@@ -32,7 +32,10 @@ namespace PaymentGateway.WebApi.Models.v1
                     (request == null ? "PaymentRequest" : ""));
             }
 
-            return new GatewayPaymentRequest { };
+            return new GatewayPaymentRequest 
+            { 
+                MerchantReferenceNumber = request.MerchantReferenceNumber                
+            };
 
         }
     }
