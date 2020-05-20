@@ -5,7 +5,7 @@ namespace PaymentGateway.DAL
 {
     public interface IRepository
     {
-        Task<GatewayPaymentRequest> RegisterPaymentRequest(GatewayPaymentRequest request);
+        Task<string> RegisterPaymentRequest(GatewayPaymentRequest request);
 
         Task RegisterResponse(GatewayResponse response);
 

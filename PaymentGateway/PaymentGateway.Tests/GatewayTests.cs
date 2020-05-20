@@ -30,7 +30,8 @@ namespace PaymentGateway.Tests
             var request = new GatewayPaymentRequest
             {
                 MerchantId = Guid.NewGuid().ToString(),
-                MerchantReferenceNumber = Guid.NewGuid().ToString()
+                MerchantReferenceNumber = Guid.NewGuid().ToString(),
+                LongNumber = "1111 1111 1111 1111"
             };
 
             paymentProcessor.Setup(p => p.HandlePaymentRequest(It.IsAny<PaymentProcessorRequest>()))
@@ -45,6 +46,8 @@ namespace PaymentGateway.Tests
             Check.That(storedRequest).IsNotNull();
             Check.That(storedRequest.MerchantId).Equals(request.MerchantId);
             Check.That(storedRequest.MerchantReferenceNumber).Equals(request.MerchantReferenceNumber);
+            Check.That(storedRequest.LongNumber).IsNotEqualTo(request.LongNumber);
+            Check.That(storedRequest.TruncatedNumber).IsNotNull();
 
             var responseDetails = await repository.RetrieveDetails(request.MerchantId, request.MerchantReferenceNumber);
             Check.That(responseDetails).IsNotNull();

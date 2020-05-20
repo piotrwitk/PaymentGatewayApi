@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PaymentGateway.PaymentProcessors.Models
+﻿namespace PaymentGateway.PaymentProcessors.Models
 {
     public class PaymentProcessorRequest
     {
-        public string GatewayId { get; set; }
         public string PaymentCurrency { get; set; }
         public double PaymentAmount { get; set; }
         public string LongCardNumber { get; set; }

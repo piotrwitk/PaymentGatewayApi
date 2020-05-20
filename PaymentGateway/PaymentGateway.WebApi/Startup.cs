@@ -27,7 +27,7 @@ namespace PaymentGateway.WebApi
             services.AddSingleton<IPaymentProcessor, SimulatedPaymentProcessor>();
             services.AddSingleton<IGateway, Gateway>();
             services.AddSingleton<IGatewayClock, GatewayClock>();
-            services.AddSingleton<IRepository, DummyRepository>();
+            services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddMvc(options =>
             {
                 options.Filters.Add(new ApiExceptionFilter());
