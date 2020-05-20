@@ -1,5 +1,6 @@
 ﻿using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
+using PaymentGateway.PaymentProcessors.Models;
 using System.Threading.Tasks;
 
 namespace PaymentGateway
@@ -15,8 +16,9 @@ namespace PaymentGateway
 
         public async Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request)
         {
-            var response = await paymentProcessor.HandlePaymentRequest(request);
-            return response;
+            var paymentRequest = PaymentProcessorMapper.MapRequest(request);
+            var response = await paymentProcessor.HandlePaymentRequest(paymentRequest);
+            return PaymentProcessorMapper.MapResponse(response, request);
         }
 
         public Task<GatewayResponse> HandleDetailsRequest(GatewayDetailsRequest request)

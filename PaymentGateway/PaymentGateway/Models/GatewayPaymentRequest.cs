@@ -7,14 +7,25 @@
         /// </summary>
         public string GatewayId { get; set; }
 
-        /// <summary>
-        /// Currency symbol and amount
+        /// <summary>        
+        /// Currency symbol expressed in ISO 4217
         /// </summary>
-        public PaymentCurrency PaymentCurrecny { get; set; }
+        /// <see cref="https://en.wikipedia.org/wiki/ISO_4217"/>
+        public string PaymentCurrency { get; set; }
 
         /// <summary>
-        /// All details from a card needed to make a payment
+        /// Amount of the request in currency defined by <see cref="PaymentCurrency"/>
         /// </summary>
-        public CardDetails CardDetails { get; set; }
+        public double PaymentAmount { get; set; }
+
+        public string NameOnCard { get; set; }
+
+        public string LongNumber { get; set; }
+
+        public string ValidFrom { get; set; }
+
+        public string ValidTo { get; set; }
+
+        public int CVV { get; set; }
     }
 }

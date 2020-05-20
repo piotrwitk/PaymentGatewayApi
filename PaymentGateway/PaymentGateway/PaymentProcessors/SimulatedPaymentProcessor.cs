@@ -1,4 +1,4 @@
-﻿using PaymentGateway.Models;
+﻿using PaymentGateway.PaymentProcessors.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -6,9 +6,15 @@ namespace PaymentGateway.PaymentProcessors
 {
     public class SimulatedPaymentProcessor : IPaymentProcessor
     {
-        public Task<GatewayResponse> HandlePaymentRequest(GatewayPaymentRequest request)
+        public Task<PaymentProcessorResponse> HandlePaymentRequest(PaymentProcessorRequest request)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new PaymentProcessorResponse 
+            {
+                GatewayId = request.GatewayId,
+                IsSuccess = true,
+                FailureReason = string.Empty,
+                PaymentProcessorReference = Guid.NewGuid().ToString()
+            });
         }
     }
 }
