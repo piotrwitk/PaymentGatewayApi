@@ -7,6 +7,7 @@ using PaymentGateway.DAL;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.WebApi.Filters;
 using PaymentGateway.WebApi.Utils;
+using Microsoft.OpenApi.Models;
 
 namespace PaymentGateway.WebApi
 {
@@ -32,6 +33,10 @@ namespace PaymentGateway.WebApi
             {
                 options.Filters.Add(new ApiExceptionFilter());
             });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentGateway.WebApi", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +57,14 @@ namespace PaymentGateway.WebApi
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PaymentGateway V1");
+                c.RoutePrefix = string.Empty;
             });
         }
     }
