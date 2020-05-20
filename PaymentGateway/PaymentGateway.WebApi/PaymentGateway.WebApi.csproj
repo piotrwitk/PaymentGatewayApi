@@ -8,5 +8,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentGateway\PaymentGateway.csproj" />
+  </ItemGroup>
+
 
 </Project>
