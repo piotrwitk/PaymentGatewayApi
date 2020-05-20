@@ -1,4 +1,5 @@
 ﻿using PaymentGateway.DAL;
+using PaymentGateway.Exceptions;
 using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.PaymentProcessors.Models;
@@ -32,6 +33,12 @@ namespace PaymentGateway
         public async Task<GatewayResponse> HandleDetailsRequest(GatewayDetailsRequest request)
         {
             var response = await repository.RetrieveDetails(request.MerchantId, request.MerchantReferenceNumber);
+
+            if (response == null)
+            {
+                throw new PaymentResponseNotFoundException();
+            }
+
             return response;
         }
     }

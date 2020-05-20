@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using PaymentGateway.Exceptions;
 using System;
 using System.Net;
 
@@ -14,8 +15,16 @@ namespace PaymentGateway.WebApi.Filters
                 context.ExceptionHandled = true;
                 HttpResponse response = context.HttpContext.Response;
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
-                response.ContentType = "application/json"; 
-        }
+            }
+            else if (context.Exception is PaymentResponseNotFoundException)
+            {
+                context.ExceptionHandled = true;
+                HttpResponse response = context.HttpContext.Response;
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+            }
+
+
+
 
             base.OnException(context);
         }
