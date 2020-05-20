@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PaymentGateway.PaymentProcessors;
+using PaymentGateway.WebApi.Filters;
 
 namespace PaymentGateway.WebApi
 {
@@ -25,6 +26,10 @@ namespace PaymentGateway.WebApi
             services.AddSingleton<ISystemClock, SystemClock>();
             services.AddSingleton<IPaymentProcessor, SimulatedPaymentProcessor>();
             services.AddSingleton<IGateway, Gateway>();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ApiExceptionFilter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

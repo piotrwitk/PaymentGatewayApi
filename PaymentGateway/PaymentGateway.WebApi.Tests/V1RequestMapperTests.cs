@@ -39,6 +39,7 @@ namespace PaymentGateway.WebApi.Tests
         [TestCase(null, "valid_ref")]
         [TestCase("valid_id", null)]
         [TestCase("valid_id", "")]
+        [TestCase(" ", " ")]
         public void MappingDetails_WhenMissingInput_ShouldThrowBadArgument(string merchantId, string merchantRef)
         {
             Check.ThatCode(() => RequestMapper.MapDetailsRequest(merchantId, merchantRef, clock.Object))

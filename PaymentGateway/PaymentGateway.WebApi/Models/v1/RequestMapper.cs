@@ -9,11 +9,11 @@ namespace PaymentGateway.WebApi.Models.v1
         public static GatewayDetailsRequest MapDetailsRequest(string merchantId, string merchantReferenceNumber, IGatewayClock clock)
         {
 
-            if (string.IsNullOrEmpty(merchantId) || string.IsNullOrEmpty(merchantReferenceNumber))
+            if (string.IsNullOrWhiteSpace(merchantId) || string.IsNullOrWhiteSpace(merchantReferenceNumber))
             {
                 throw new ArgumentException("Missing: " + 
-                    (string.IsNullOrEmpty(merchantId) ? "merchant id " : "") +
-                    (string.IsNullOrEmpty(merchantId) ? "merchant reference number " : ""));
+                    (string.IsNullOrWhiteSpace(merchantId) ? "merchant id " : "") +
+                    (string.IsNullOrWhiteSpace(merchantId) ? "merchant reference number " : ""));
             }
 
             return new GatewayDetailsRequest
