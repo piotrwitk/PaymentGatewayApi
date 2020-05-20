@@ -9,12 +9,12 @@ using Moq;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.WebApi.Filters;
 using System.Threading.Tasks;
-using PaymentGateway.Models;
 using PaymentGateway.WebApi.Models.v1;
 using Newtonsoft.Json;
 using System.Text;
 using NFluent;
 using System.Net;
+using PaymentGateway.PaymentProcessors.Models;
 
 namespace PaymentGateway.WebApi.Tests
 {
@@ -62,12 +62,11 @@ namespace PaymentGateway.WebApi.Tests
         {
             var merchantRef = "merchant_ref";
 
-            mockedPaymentProcessor.Setup(p => p.HandlePaymentRequest(It.IsAny<GatewayPaymentRequest>()))
-                .ReturnsAsync(new GatewayResponse 
+            mockedPaymentProcessor.Setup(p => p.HandlePaymentRequest(It.IsAny<PaymentProcessorRequest>()))
+                .ReturnsAsync(new PaymentProcessorResponse 
                 { 
                     IsSuccess = expectedReturn,
-                    FailureReason = expectedFailure,
-                    MerchantReferenceNumber = merchantRef
+                    FailureReason = expectedFailure
                 });
 
             var paymentRequest = new PaymentRequest

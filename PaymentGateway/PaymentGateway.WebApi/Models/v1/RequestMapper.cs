@@ -36,7 +36,6 @@ namespace PaymentGateway.WebApi.Models.v1
             { 
                 MerchantReferenceNumber = request.MerchantReferenceNumber                
             };
-
         }
     }
 }
