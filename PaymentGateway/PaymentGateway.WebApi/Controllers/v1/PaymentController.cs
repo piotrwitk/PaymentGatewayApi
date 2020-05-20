@@ -21,9 +21,16 @@ namespace PaymentGateway.WebApi.Controllers.v1
         }
 
         [HttpGet("{merchantId}/{merchantReferenceNumber}")]
-        public async Task<PaymentResponse> Details(string merchantId, string merchantReferenceNumber)
+        public async Task<PaymentResponse> PaymentDetails(string merchantId, string merchantReferenceNumber)
         {
             var request = RequestMapper.MapDetailsRequest(merchantId, merchantReferenceNumber, clock);
+            var result = await gateway.HandleDetailsRequest(request);
+            return ResponseMapper.MapResponse(result);
+        }
+
+        [HttpPost("{merchantId}")]
+        public async Task<PaymentResponse> PaymentRequest(string merchantId, PaymentRequest request)
+        {
             return new PaymentResponse { };
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PaymentGateway.Tests
 {
-    public class Tests
+    public class PaymentControllerTests
     {
         private Mock<IPaymentProcessor> paymentProcessor;
         private Gateway gateway;
@@ -28,7 +28,7 @@ namespace PaymentGateway.Tests
             };
 
             paymentProcessor.Setup(p => p.HandlePaymentRequest(request))
-                .Returns(Task.FromResult(new GatewayPaymentResponse { IsSuccess = true }));
+                .Returns(Task.FromResult(new GatewayResponse { IsSuccess = true }));
 
             var gatewayResponse = gateway.HandlePaymentRequest(request);
 
