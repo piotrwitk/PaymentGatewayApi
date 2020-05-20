@@ -29,9 +29,11 @@ namespace PaymentGateway.WebApi.Controllers.v1
         }
 
         [HttpPost("{merchantId}")]
-        public async Task<PaymentResponse> PaymentRequest(string merchantId, PaymentRequest request)
+        public async Task<PaymentResponse> PaymentRequest(string merchantId, [FromBody] PaymentRequest payload)
         {
-            return new PaymentResponse { };
+            var request = RequestMapper.MapPaymentRequest(merchantId, payload, clock);
+            var result = await gateway.HandlePaymentRequest(request);
+            return ResponseMapper.MapResponse(result);
         }
     }
 }
