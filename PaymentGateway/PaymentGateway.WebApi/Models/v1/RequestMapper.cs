@@ -8,7 +8,6 @@ namespace PaymentGateway.WebApi.Models.v1
     {
         public static GatewayDetailsRequest MapDetailsRequest(string merchantId, string merchantReferenceNumber, IGatewayClock clock)
         {
-
             if (string.IsNullOrWhiteSpace(merchantId) || string.IsNullOrWhiteSpace(merchantReferenceNumber))
             {
                 throw new ArgumentException("Missing: " + 
@@ -22,6 +21,19 @@ namespace PaymentGateway.WebApi.Models.v1
                 MerchantReferenceNumber = merchantReferenceNumber,
                 TimeStamp = clock.GetCurrentUtcTimestamp()
             };
+        }
+
+        public static GatewayPaymentRequest MapPaymentRequest(string merchantId, PaymentRequest request, IGatewayClock clock)
+        {
+            if (string.IsNullOrWhiteSpace(merchantId) || request == null)
+            {
+                throw new ArgumentException("Missing: " +
+                    (string.IsNullOrWhiteSpace(merchantId) ? "merchant id " : "") +
+                    (request == null ? "PaymentRequest" : ""));
+            }
+
+            return new GatewayPaymentRequest { };
+
         }
     }
 }

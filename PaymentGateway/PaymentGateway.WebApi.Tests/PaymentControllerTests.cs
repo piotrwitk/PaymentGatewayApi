@@ -15,6 +15,7 @@ using System;
 using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.WebApi.Filters;
+using System.Text;
 
 namespace PaymentGateway.WebApi.Tests
 {
@@ -67,14 +68,61 @@ namespace PaymentGateway.WebApi.Tests
         }
 
         [Test]
-        public async Task ReturnsResponse_IfGatewayReturnsData()
+        public async Task Return_BadRequest_WhenNoPayloadForPayment()
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json");
+            var result = await client.PostAsync("api/v1/payment/123", content);
+            Check.That(result.StatusCode).Equals(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public async Task Return_BadRequest_WhenNoMerchantForPayment()
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(new PaymentRequest { }), Encoding.UTF8, "application/json");
+            var result = await client.PostAsync("api/v1/payment/ /", content);
+            Check.That(result.StatusCode).Equals(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public async Task Returns_Response_WhenGatewayReturnsData()
+        {
+            var merchantId = "merchantId";
+            var merchantRef = "merchantRef";
+            var timestamp = DateTimeOffset.UtcNow;
+            
+            mockedClock.Setup(c => c.GetCurrentUtcTimestamp()).Returns(timestamp);
+            mockedGateway.Setup(g => g.HandlePaymentRequest(It.IsAny<GatewayPaymentRequest>()))
+                .ReturnsAsync(new GatewayResponse
+                {
+                    MerchantId = merchantId,
+                    MerchantReferenceNumber = merchantRef,
+                    IsSuccess = true,
+                    TimeStamp = timestamp
+                });
+
+            var content = new StringContent(JsonConvert.SerializeObject(new PaymentRequest { }), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("api/v1/payment/123", content);
+
+            Check.That(response.StatusCode).Equals(HttpStatusCode.OK);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<PaymentResponse>(responseContent);
+
+            Check.That(result).IsNotNull();
+            Check.That(result.MerchantId).Equals(merchantId);
+            Check.That(result.MerchantReferenceNumber).Equals(merchantRef);
+            Check.That(result.IsSuccess).IsTrue();
+            Check.That(result.TimeStamp).Equals(timestamp);
+        }
+
+        [Test]
+        public async Task Returns_DetailsResponse_WhenGatewayReturnsData()
         {
             var merchantId = "merchantId";
             var merchantRef = "merchantRef";
             var timestamp = DateTimeOffset.UtcNow;
 
-            mockedClock.Setup(c => c.GetCurrentUtcTimestamp())
-                .Returns(timestamp);
+            mockedClock.Setup(c => c.GetCurrentUtcTimestamp()).Returns(timestamp);
             mockedGateway.Setup(g => g.HandleDetailsRequest(It.IsAny<GatewayDetailsRequest>()))
                 .ReturnsAsync(new GatewayResponse
                 {
@@ -82,9 +130,10 @@ namespace PaymentGateway.WebApi.Tests
                     MerchantReferenceNumber = merchantRef,
                     IsSuccess = true,
                     TimeStamp = timestamp
-                }); ;
+                });
 
             var response = await client.GetAsync($"api/v1/payment/{merchantId}/{merchantRef}");
+
             Check.That(response.StatusCode).Equals(HttpStatusCode.OK);
 
             var content = await response.Content.ReadAsStringAsync();
