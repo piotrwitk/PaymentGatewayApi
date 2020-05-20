@@ -34,7 +34,16 @@ namespace PaymentGateway.WebApi.Models.v1
 
             return new GatewayPaymentRequest 
             { 
-                MerchantReferenceNumber = request.MerchantReferenceNumber                
+                MerchantReferenceNumber = request.MerchantReferenceNumber,
+                CVV = request.CVV,
+                LongNumber = request.LongCardNumber,
+                MerchantId = merchantId,
+                NameOnCard = request.NameOnCard,
+                PaymentAmount = request.Amount,
+                PaymentCurrency = request.Currency,
+                TimeStamp = clock.GetCurrentUtcTimestamp(),
+                ValidFrom = request.ValidFrom,
+                ValidTo = request.ValidTo
             };
         }
     }
