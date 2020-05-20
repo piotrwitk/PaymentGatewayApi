@@ -1,11 +1,10 @@
-﻿using PaymentGateway.DAL;
-using PaymentGateway.Models;
+﻿using PaymentGateway.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PaymentGateway.WebApi.Tests
+namespace PaymentGateway.DAL
 {
     public class InMemoryRepository : IRepository
     {

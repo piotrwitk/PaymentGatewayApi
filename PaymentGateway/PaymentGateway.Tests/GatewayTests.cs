@@ -5,7 +5,6 @@ using PaymentGateway.DAL;
 using PaymentGateway.Models;
 using PaymentGateway.PaymentProcessors;
 using PaymentGateway.PaymentProcessors.Models;
-using PaymentGateway.WebApi.Tests;
 using System;
 using System.Threading.Tasks;
 
