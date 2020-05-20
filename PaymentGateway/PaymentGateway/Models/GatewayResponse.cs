@@ -4,6 +4,8 @@ namespace PaymentGateway.Models
 {
     public class GatewayResponse : BaseResponse
     {
+        public string PaymentProcessorId { get; set; }
+
         public string GatewayId { get; set; }
 
         public string MerchantId { get; set; }
