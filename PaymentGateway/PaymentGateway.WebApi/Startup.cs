@@ -8,6 +8,7 @@ using PaymentGateway.PaymentProcessors;
 using PaymentGateway.WebApi.Filters;
 using PaymentGateway.WebApi.Utils;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace PaymentGateway.WebApi
 {
@@ -36,6 +37,8 @@ namespace PaymentGateway.WebApi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PaymentGateway.WebApi", Version = "v1" });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "PaymentGateway.WebApi.xml");
+                c.IncludeXmlComments(filePath);
             });
         }
 

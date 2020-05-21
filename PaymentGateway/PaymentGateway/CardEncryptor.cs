@@ -3,6 +3,11 @@ using System;
 
 namespace PaymentGateway
 {
+    /// <summary>
+    /// Basic implementation that currently destroys the LongNumber and only stores last 4 digits of it
+    /// In real life this should encrypt LongNumber (and possibly other card data) using symmetric encryption
+    /// Also rotation of the keys used for encryption / decription should be taken into an account
+    /// </summary>
     public class CardEncryptor
     {
         public static GatewayPaymentRequest EncryptCardData(GatewayPaymentRequest originalRequest)

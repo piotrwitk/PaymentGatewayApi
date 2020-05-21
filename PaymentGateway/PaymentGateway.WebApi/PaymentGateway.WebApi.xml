@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaymentGateway.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:PaymentGateway.WebApi.Controllers.v1.PaymentController.#ctor(PaymentGateway.IGateway,PaymentGateway.WebApi.Utils.IGatewayClock)">
+            <summary>
+            
+            </summary>
+            <param name="gateway"></param>
+            <param name="clock"></param>
+        </member>
+        <member name="M:PaymentGateway.WebApi.Controllers.v1.PaymentController.PaymentDetails(System.String,System.String)">
+            <summary>
+            Retrieves payment request details
+            </summary>
+            <param name="merchantId">Id of the merchant from when registered in the system</param>
+            <param name="merchantReferenceNumber">Merchant's own reference number. Must be unique per operation</param>
+            <response code="200">Returns details of the payment operation registered in the system</response>
+            <response code="400">Passed arguments are not correct</response>  
+            <response code="404">Payment details for specific argument could not be found</response>  
+        </member>
+        <member name="M:PaymentGateway.WebApi.Controllers.v1.PaymentController.PaymentRequest(System.String,PaymentGateway.WebApi.Models.v1.PaymentRequest)">
+            <summary>
+            Attempts to process a payment request
+            </summary>
+            <param name="merchantId">Id of the merchant from when registered in the system</param>
+            <param name="payload">Payment request containing card's details, amount, currency</param>
+            <response code="200">The payment request has been processed</response>
+            <response code="400">Payment details are not correct</response>  
+            <response code="404">Merchant could not be found and payment was not processed</response>  
+        </member>
+        <member name="T:PaymentGateway.WebApi.Models.v1.PaymentRequest">
+            <summary>
+            Defines a payload needed to process a payment request
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.MerchantReferenceNumber">
+            <summary>
+            Merchant's own reference number / transaction Id. Must be unique per each request
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.LongCardNumber">
+            <summary>
+            Long number as appearing on the card
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.NameOnCard">
+            <summary>
+            Name on the card
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.ValidFrom">
+            <summary>
+            Optional. From when a card used in a payment is valid in form of MM/YYYY
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.ValidTo">
+            <summary>
+            To when a card used in a payment is valid in form of MM/YYYY
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.CVV">
+            <summary>
+            CVV number in the back of a card (for 4 digit in from in case of Amex)
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.Currency">
+            <summary>
+            Which currency is used to perform payment operation, <see cref="!:https://en.wikipedia.org/wiki/ISO_4217"/>
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.Amount">
+            <summary>
+            Amount of the payment to be processed in <seealso cref="P:PaymentGateway.WebApi.Models.v1.PaymentRequest.Currency"/>
+            </summary>
+        </member>
+        <member name="T:PaymentGateway.WebApi.Models.v1.PaymentResponse">
+            <summary>
+            Response produced by either payment request or when retrieving details 
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.MerchantId">
+            <summary>
+            Id of the merchant as registered in the system
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.MerchantReferenceNumber">
+            <summary>
+            Mertchant's own reference number used in payment request
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.PaymentCurrency">
+            <summary>
+            Which currency was used for payment operation, <see cref="!:https://en.wikipedia.org/wiki/ISO_4217"/>        
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.PaymentAmount">
+            <summary>
+            The amount of payment, in <see cref="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.PaymentCurrency"/>
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.TimeStamp">
+            <summary>
+            Server's timestamp of registering the original payment request
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.TruncatedCardNumber">
+            <summary>
+            A truncated number of the card used in transaction
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.IsSuccess">
+            <summary>
+            Indicating if acquiring bank accepted the request
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.WebApi.Models.v1.PaymentResponse.FailureReason">
+            <summary>
+            In case of failue, a description explaining why payment was not processed
+            </summary>
+        </member>
+    </members>
+</doc>
