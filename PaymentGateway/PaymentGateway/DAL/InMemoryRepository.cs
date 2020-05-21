@@ -8,8 +8,8 @@ namespace PaymentGateway.DAL
 {
     public class InMemoryRepository : IRepository
     {
-        private List<GatewayPaymentRequest> requests = new List<GatewayPaymentRequest>();
-        private List<GatewayResponse> responses = new List<GatewayResponse>();
+        private readonly List<GatewayPaymentRequest> requests = new List<GatewayPaymentRequest>();
+        private readonly List<GatewayResponse> responses = new List<GatewayResponse>();
 
         public Task<string> RegisterPaymentRequest(GatewayPaymentRequest request)
         {
