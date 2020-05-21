@@ -3,6 +3,9 @@ using System;
 
 namespace PaymentGateway.WebApi.Models.v1
 {
+    /// <summary>
+    /// Response produced by either payment request or when retrieving details 
+    /// </summary>
     public class PaymentResponse
     {
         /// <summary>
@@ -11,13 +14,13 @@ namespace PaymentGateway.WebApi.Models.v1
         public string MerchantId { get; set; }
         
         /// <summary>
-        /// Mertchant's own reference number. Should be unique per transaction
+        /// Mertchant's own reference number used in payment request
         /// </summary>
         public string MerchantReferenceNumber { get; set; }
 
 
         /// <summary>
-        /// Currency symbol
+        /// Which currency was used for payment operation, <see cref="https://en.wikipedia.org/wiki/ISO_4217"/>        
         /// </summary>
         public string PaymentCurrency { get; set; }
         
